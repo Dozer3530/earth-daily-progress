@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="refresh" content="60">
+<title>Magpie - Weekly progress</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  /* Bauhaus: paper ground, primaries as data, geometric sans, flat + gridded.
+     Sized to fill an iframe (Google Sites embed) as happily as a full page. */
+  :root{--paper:#F0ECE1;--card:#FBFAF6;--ink:#161514;--ink-2:#6E6A5F;--ink-3:#A8A296;
+    --rule:#161514;--rule-soft:#D8D3C6;--blue:#1E50A2;--red:#D8371F;--yellow:#F3C20D;--track:#E7E2D5}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--paper);color:var(--ink);font-family:"Jost",system-ui,sans-serif;
+    padding:22px;font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased}
+  .shp{display:inline-block;flex:none;width:9px;height:9px}
+  .shp.circle{border-radius:50%}
+  .shp.tri{width:0;height:0;background:none!important;border-left:5px solid transparent;
+    border-right:5px solid transparent;border-bottom:9px solid var(--yellow)}
+  .shp.diamond{width:7px;height:7px;transform:rotate(45deg)}
+  /* header */
+  .top{display:flex;align-items:center;gap:12px;border-bottom:1.5px solid var(--rule);padding-bottom:16px;flex-wrap:wrap}
+  .lock{display:flex;gap:4px;align-items:center}
+  .lock i{width:14px;height:14px;display:block}
+  .lock .c{border-radius:50%;background:var(--red)}
+  .lock .q{background:var(--blue)}
+  .lock .t{width:0;height:0;border-left:7px solid transparent;border-right:7px solid transparent;border-bottom:14px solid var(--yellow)}
+  .wm{font-weight:800;font-size:22px;letter-spacing:-.02em}
+  .ttl{font-weight:700;font-size:12px;color:var(--ink-2);letter-spacing:.02em}
+  .stamp{margin-left:auto;font-size:11px;font-weight:700;color:var(--ink-2);
+    display:flex;align-items:center;gap:7px}
+  .stamp .d{width:8px;height:8px;border-radius:50%;background:var(--blue)}
+  /* totals */
+  .tot{display:grid;grid-template-columns:repeat(4,1fr);border:1.5px solid var(--rule);margin-top:18px}
+  .tot .t{padding:12px 14px;border-right:1.5px solid var(--rule)}
+  .tot .t:last-child{border-right:none}
+  .tot .t.fill{background:var(--yellow)}
+  .tot .k{font-size:10px;letter-spacing:.13em;color:var(--ink-2);font-weight:700}
+  .tot .t.fill .k{color:var(--ink)}
+  .tot .v{font-weight:800;font-size:25px;margin-top:5px;letter-spacing:-.02em;font-variant-numeric:tabular-nums;line-height:1}
+  .tot .v .u{font-size:13px;color:var(--ink-3);font-weight:700}
+  .tot .t.fill .v .u{color:var(--ink)}
+  /* week cards */
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px;margin-top:20px}
+  .card{border:1.5px solid var(--rule);background:var(--card)}
+  .card .hd{display:flex;align-items:center;gap:9px;padding:12px 15px;border-bottom:1.5px solid var(--rule);flex-wrap:wrap}
+  .card.new .hd{background:var(--yellow)}
+  .wk{font-weight:800;font-size:14px;letter-spacing:-.01em;word-break:break-word}
+  .pill{font-size:9px;letter-spacing:.1em;padding:2px 8px;font-weight:700;border:1.5px solid var(--ink);margin-left:auto}
+  .pill.done{background:var(--ink);color:var(--card);border-color:var(--ink)}
+  .crop{padding:12px 15px}
+  .crop+.crop{border-top:1px solid var(--rule-soft)}
+  .crop h4{font-size:12px;font-weight:700;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+  .crop h4 .ex{margin-left:auto;font-size:10px;font-weight:700;color:var(--ink-2)}
+  .bars{display:grid;grid-template-columns:1fr 1fr;gap:9px 16px}
+  .bar .lab{display:flex;align-items:center;gap:6px;margin-bottom:4px}
+  .bar .lab .n{font-size:10px;letter-spacing:.05em;color:var(--ink-2);font-weight:700;flex:1}
+  .bar .lab b{font-size:11px;font-weight:700;font-variant-numeric:tabular-nums}
+  .track{height:6px;background:var(--track)}
+  .track i{display:block;height:100%}
+  .legend{display:flex;gap:16px;flex-wrap:wrap;margin-top:20px;padding-top:14px;
+    border-top:1px solid var(--rule-soft);font-size:10.5px;color:var(--ink-2);font-weight:700}
+  .legend span{display:flex;align-items:center;gap:7px}
+  .empty{color:var(--ink-3);margin-top:24px;font-weight:600}
+</style></head>
+<body>
+  <div class="top">
+    <span class="lock"><i class="c"></i><i class="q"></i><i class="t"></i></span>
+    <span class="wm">magpie</span>
+    <span class="ttl">weekly progress</span>
+    <span class="stamp"><span class="d"></span><span id="stamp"></span></span>
+  </div>
+  <div id="tot"></div>
+  <div id="grid" class="grid"></div>
+  <div class="legend">
+    <span><i class="shp circle" style="background:var(--blue)"></i>field · survey123</span>
+    <span><i class="shp" style="background:var(--red)"></i>lab · pt2r</span>
+    <span><i class="shp tri"></i>pest · cards</span>
+    <span><i class="shp diamond" style="background:var(--ink)"></i>disease · lab tests</span>
+  </div>
+<script>
+var PAYLOAD = {"updated": "2026-07-24 14:29", "weeks": [{"iso_week": "2026_WEEK6", "label": null, "created_at": "2026-07-23 14:52:17", "crops": [{"crop_code": "canola", "display_name": "Canola", "total_locations": 9, "field_filled": 0, "field_expected": 297, "field_locations": 0, "lab_filled": 0, "lab_expected": 441, "lab_locations": 0, "pest_cards": 0, "pest_uploaded": false, "disease_points": 0, "disease_uploaded": false, "reactive_points": 0, "extra_points": 0}, {"crop_code": "corn", "display_name": "Corn", "total_locations": 9, "field_filled": 0, "field_expected": 405, "field_locations": 0, "lab_filled": 0, "lab_expected": 459, "lab_locations": 0, "pest_cards": 0, "pest_uploaded": false, "disease_points": 0, "disease_uploaded": false, "reactive_points": 0, "extra_points": 0}]}, {"iso_week": "2026_WEEK5", "label": null, "created_at": "2026-07-23 14:51:51", "crops": [{"crop_code": "canola", "display_name": "Canola", "total_locations": 9, "field_filled": 96, "field_expected": 297, "field_locations": 8, "lab_filled": 360, "lab_expected": 441, "lab_locations": 8, "pest_cards": 8, "pest_uploaded": true, "disease_points": 0, "disease_uploaded": false, "reactive_points": 10, "extra_points": 1}, {"crop_code": "corn", "display_name": "Corn", "total_locations": 9, "field_filled": 84, "field_expected": 405, "field_locations": 7, "lab_filled": 344, "lab_expected": 459, "lab_locations": 8, "pest_cards": 8, "pest_uploaded": true, "disease_points": 4, "disease_uploaded": true, "reactive_points": 0, "extra_points": 0}]}, {"iso_week": "2026_Week4", "label": null, "created_at": "2026-07-10 15:56:42", "crops": [{"crop_code": "canola", "display_name": "Canola", "total_locations": 9, "field_filled": 97, "field_expected": 297, "field_locations": 8, "lab_filled": 352, "lab_expected": 441, "lab_locations": 8, "pest_cards": 7, "pest_uploaded": true, "disease_points": 0, "disease_uploaded": false, "reactive_points": 14, "extra_points": 0}, {"crop_code": "corn", "display_name": "Corn", "total_locations": 9, "field_filled": 96, "field_expected": 405, "field_locations": 8, "lab_filled": 387, "lab_expected": 459, "lab_locations": 9, "pest_cards": 8, "pest_uploaded": true, "disease_points": 0, "disease_uploaded": false, "reactive_points": 0, "extra_points": 0}]}, {"iso_week": "2026_WEEK3", "label": null, "created_at": "2026-06-29 14:24:56", "crops": [{"crop_code": "canola", "display_name": "Canola", "total_locations": 9, "field_filled": 101, "field_expected": 297, "field_locations": 8, "lab_filled": 0, "lab_expected": 441, "lab_locations": 0, "pest_cards": 7, "pest_uploaded": true, "disease_points": 0, "disease_uploaded": false, "reactive_points": 8, "extra_points": 0}, {"crop_code": "corn", "display_name": "Corn", "total_locations": 9, "field_filled": 81, "field_expected": 405, "field_locations": 6, "lab_filled": 0, "lab_expected": 459, "lab_locations": 0, "pest_cards": 8, "pest_uploaded": true, "disease_points": 0, "disease_uploaded": false, "reactive_points": 0, "extra_points": 0}]}, {"iso_week": "2026_WEEK2", "label": null, "created_at": "2026-06-18 15:00:41", "crops": [{"crop_code": "canola", "display_name": "Canola", "total_locations": 9, "field_filled": 95, "field_expected": 297, "field_locations": 8, "lab_filled": 360, "lab_expected": 441, "lab_locations": 8, "pest_cards": 9, "pest_uploaded": true, "disease_points": 0, "disease_uploaded": false, "reactive_points": 7, "extra_points": 0}, {"crop_code": "corn", "display_name": "Corn", "total_locations": 9, "field_filled": 96, "field_expected": 405, "field_locations": 8, "lab_filled": 344, "lab_expected": 459, "lab_locations": 8, "pest_cards": 9, "pest_uploaded": true, "disease_points": 0, "disease_uploaded": false, "reactive_points": 0, "extra_points": 0}]}, {"iso_week": "2026_Week1_Only_Observations", "label": null, "created_at": "2026-06-11 14:41:19", "crops": [{"crop_code": "canola", "display_name": "Canola", "total_locations": 9, "field_filled": 121, "field_expected": 297, "field_locations": 9, "lab_filled": 0, "lab_expected": 441, "lab_locations": 0, "pest_cards": 0, "pest_uploaded": false, "disease_points": 0, "disease_uploaded": false, "reactive_points": 5, "extra_points": 0}, {"crop_code": "corn", "display_name": "Corn", "total_locations": 9, "field_filled": 119, "field_expected": 405, "field_locations": 9, "lab_filled": 0, "lab_expected": 459, "lab_locations": 0, "pest_cards": 0, "pest_uploaded": false, "disease_points": 0, "disease_uploaded": false, "reactive_points": 0, "extra_points": 0}]}]};
+var SHAPES = {field:['circle','var(--blue)'], lab:['square','var(--red)'],
+              pest:['tri','var(--yellow)'], disease:['diamond','var(--ink)']};
+function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){
+  return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];});}
+function shp(kind){
+  var s=SHAPES[kind]||['square','var(--ink)'];
+  if(s[0]==='tri') return '<i class="shp tri"></i>';
+  var cls = s[0]==='circle' ? 'shp circle' : (s[0]==='diamond' ? 'shp diamond' : 'shp');
+  return '<i class="'+cls+'" style="background:'+s[1]+'"></i>';
+}
+function bar(kind, label, n, total){
+  var pct = total ? Math.round(n/total*100) : 0;
+  return '<div class="bar"><div class="lab">'+shp(kind)+'<span class="n">'+label+'</span><b>'+n+'/'+total+'</b></div>'
+    + '<div class="track"><i style="width:'+pct+'%;background:'+SHAPES[kind][1]+'"></i></div></div>';
+}
+document.getElementById("stamp").textContent = "updated " + PAYLOAD.updated;
+
+// ---- totals across all weeks ----
+var W = PAYLOAD.weeks || [];
+var tField=0, tExp=0, tLab=0, tPend=0, tExtra=0;
+W.forEach(function(w){ (w.crops||[]).forEach(function(c){
+  var t=c.total_locations||0;
+  tField+=c.field_locations||0; tExp+=t; tLab+=c.lab_locations||0;
+  tExtra+=(c.reactive_points||0)+(c.extra_points||0);
+});});
+tPend = Math.max(0, tExp - tLab);
+document.getElementById("tot").innerHTML =
+  '<div class="tot">'
+  + '<div class="t fill"><div class="k">weeks tracked</div><div class="v">'+W.length+'</div></div>'
+  + '<div class="t"><div class="k">points scouted</div><div class="v">'+tField+'<span class="u">/'+tExp+'</span></div></div>'
+  + '<div class="t"><div class="k">lab results in</div><div class="v">'+tLab+'<span class="u">/'+tExp+'</span></div></div>'
+  + '<div class="t"><div class="k">extra points</div><div class="v">'+tExtra+'</div></div>'
+  + '</div>';
+
+var g = document.getElementById("grid");
+if(!W.length){ g.innerHTML = '<div class="empty">No weeks yet.</div>'; }
+else g.innerHTML = W.map(function(w, idx){
+  var crops = (w.crops||[]).map(function(c){
+    var t = c.total_locations || 9;
+    var extra = (c.reactive_points||0)+(c.extra_points||0);
+    return '<div class="crop"><h4>'+esc(c.display_name)
+      + (extra ? '<span class="ex">+'+extra+' reactive/extra</span>' : '') + '</h4>'
+      + '<div class="bars">'
+      + bar("field","field", c.field_locations||0, t)
+      + bar("lab","lab", c.lab_locations||0, t)
+      + bar("pest","pest", c.pest_cards||0, t)
+      + bar("disease","disease", c.disease_points||0, t)
+      + '</div></div>';
+  }).join("");
+  var complete = (w.crops||[]).length && (w.crops||[]).every(function(c){
+    var t=c.total_locations||9; return (c.field_locations||0)>=t && (c.lab_locations||0)>=t; });
+  var pill = idx===0 ? '<span class="pill">latest</span>'
+           : (complete ? '<span class="pill done">complete</span>' : '');
+  return '<div class="card'+(idx===0?' new':'')+'"><div class="hd"><span class="wk">'
+    + esc(w.iso_week)+'</span>'+pill+'</div>'+crops+'</div>';
+}).join("");
+</script>
+</body></html>
