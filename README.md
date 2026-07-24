@@ -1,8 +1,8 @@
-# Magpie - weekly progress
+﻿# Earth Daily — Data Progress
 
-Auto-published completeness dashboard for the weekly crop-monitoring packages.
+Auto-published progress dashboard for the weekly crop-monitoring data packages.
 
-**This repo contains only the generated progress page.** It shows counts only -
-no coordinates, no field data, no source. Published from Magpie (private).
+This repo contains only the generated page. It shows **completeness counts
+only** — no coordinates, no field data, no source code.
 
-Live: https://dozer3530.github.io/magpie-progress/
+Live: https://dozer3530.github.io/earth-daily-progress/
